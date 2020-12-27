@@ -1500,32 +1500,6 @@ function opxL(title,text)
 	opxholder.Visible = true
 end
 
-if _G.sCheck then _G.sCheck:Disconnect() end
-if sDetect then
-	while not cmdlp.Character do
-		cmdrs2.RenderStepped:Wait()
-	end
-	local check1 = cmdlp.Character:FindFirstChild("Head")
-	if check1 then
-		local check2 = check1:FindFirstChild(AntiCheat.Attachment)
-		if check2 then
-			check2:Destroy()
-		end
-	end
-	_G.sCheck = cmdlp.CharacterAdded:Connect(function()
-		if sDetect then
-			wait(1)
-			local check1 = cmdlp.Character:FindFirstChild("Head")
-			if check1 then
-				local check2 = check1:FindFirstChild(AntiCheat.Attachment)
-				if check2 then
-					check2:Destroy()
-				end
-			end
-		end
-	end)
-end
-
 local statholder = Instance.new("Frame", getParent)
 local statviewertitle = Instance.new("TextLabel", getParent)
 local xoutofstats = Instance.new("TextButton", getParent)
