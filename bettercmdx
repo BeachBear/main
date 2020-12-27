@@ -1,7 +1,7 @@
 ---------------------------------------|
 if not game:IsLoaded() then game.Loaded:wait() end
 -- Constraints: -----------------------|
-local ver = "DV1"
+local ver = "1.0"
 local cordCode = "nil"
 ---------------------------------------|
 Parents = {[1] = game:GetService("CoreGui"):FindFirstChild("RobloxGui"), [2] = game:GetService("CoreGui"), [3] = game:GetService("Players").LocalPlayer.PlayerGui}
@@ -1192,6 +1192,20 @@ cmdsu.TextColor3 = Color3.fromRGB(100,100,100)
 cmdsu.TextSize = 14
 cmdsu.TextXAlignment = Enum.TextXAlignment.Left
 
+output1.Name = "output1"
+output1.Parent = output
+output1.BackgroundColor3 = Color3.new(1, 1, 1)
+output1.BackgroundTransparency = 1
+output1.Position = UDim2.new(0.0157605428, 0, 0.849240005, 0)
+output1.Size = UDim2.new(0, 500, 0, 27)
+output1.Font = Enum.Font.Code
+output1.Text = "pigeon & fini"
+output1.TextColor3 = Color3.new(0.698039, 0.698039, 0.698039)
+output1.TextSize = 16
+output1.TextXAlignment = Enum.TextXAlignment.Left
+output1.TextWrapped = true
+output1.TextTruncate = Enum.TextTruncate.AtEnd
+
 output2.Name = "output2"
 output2.Parent = output
 output2.BackgroundColor3 = Color3.new(1, 1, 1)
@@ -1199,7 +1213,7 @@ output2.BackgroundTransparency = 1
 output2.Position = UDim2.new(0.0157605428, 0, 0.74252063, 0)
 output2.Size = UDim2.new(0, 500, 0, 27)
 output2.Font = Enum.Font.Code
-output2.Text = "ORIGINAL CREATORS: pigeon & fini"
+output2.Text = "ORIGINAL CREATORS:"
 output2.TextColor3 = Color3.new(0.698039, 0.698039, 0.698039)
 output2.TextSize = 16
 output2.TextXAlignment = Enum.TextXAlignment.Left
@@ -1213,7 +1227,7 @@ output3.BackgroundTransparency = 1
 output3.Position = UDim2.new(0.0157605428, 0, 0.639753819, 0)
 output3.Size = UDim2.new(0, 500, 0, 27)
 output3.Font = Enum.Font.Code
-output3.Text = "CMD-X EDIT BY DAK"
+output3.Text = "( CMD-X EDIT BY DAK )"
 output3.TextColor3 = Color3.new(0.698039, 0.698039, 0.698039)
 output3.TextSize = 16
 output3.TextXAlignment = Enum.TextXAlignment.Left
@@ -1232,8 +1246,7 @@ output4.TextSize = 16
 output4.TextXAlignment = Enum.TextXAlignment.Left
 output4.TextWrapped = true
 output4.TextTruncate = Enum.TextTruncate.AtEnd
-local Hints = {"Did you know you can execute multiple commands with \";;\"?","Did you know you can create a wait using timedcmd in loops?","You can find commands using 'cmds'.","You can change your prefix by doing 'prefixnew (key)'","Did you know CMD-X was created in October 2019?"}
-output4.Text = Hints[math.random(1,#Hints)]
+output4.Text = ""
 
 output5.Name = "output5"
 output5.Parent = output
@@ -1344,7 +1357,7 @@ function sFLY(vfly)
 					BV.velocity = Vector3.new(0, 0, 0)
 				end
 				BG.cframe = workspace.CurrentCamera.CoordinateFrame
-				wait()
+				game:GetService("RunService").RenderStepped:wait()
 			end
 			CONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
 			lCONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
