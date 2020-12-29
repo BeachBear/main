@@ -7262,18 +7262,20 @@ function useCommand.piggyback()
 		if target then
 			if target.Character and target.Character:FindFirstChild('Humanoid') then
 				if pb == true then
-					pb = false
 					opx("-","Stopped riding/piggybacking")
+					game:GetService("RunService"):UnbindFromRenderStep("piggyback")
 					cmdlp.Character.Humanoid.Sit = false
+					pb = false
 				return
-				else pb = true
+				else
 					opx("-","Riding/piggybacking enabled")
-					while pb do
-						cmdlp.Character.Humanoid.Sit = true
-						cmdlp.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.Angles(0,math.rad(0),0)* CFrame.new(0,1.6,0.4)
+					local origin = target.Character:FindFirstChild("Torso") or target.Character:FindFirstChild("UpperTorso") 
+					game:GetService("RunService"):BindToRenderStep("piggyback", Enum.RenderPriority.Character.Value, function()
+						cmdlp.Character.HumanoidRootPart.CFrame = origin.CFrame * CFrame.new(0,1.75,1.4)
 						cmdlp.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
-						game:GetService("RunService").RenderStepped:wait()
-					end
+						cmdlp.Character.Humanoid.Sit = true
+					end)
+					pb = true
 				end
 			end
 		else
@@ -7285,9 +7287,10 @@ function useCommand.piggyback()
 end
 
 function useCommand.unpiggyback()
-	opx("-","Stopped piggybacking/riding")
-	pb = false
+	opx("-","Stopped riding/piggybacking")
+	game:GetService("RunService"):UnbindFromRenderStep("piggyback")
 	cmdlp.Character.Humanoid.Sit = false
+	pb = false
 end
 
 local Bang = false
