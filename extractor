@@ -1,0 +1,26 @@
+local EXCLUDE_DEFAULT_ROBLOX_ANIMATIONS = true
+
+local plr = game:GetService("Players").LocalPlayer
+local mps = game:GetService("MarketplaceService")
+local bl  = {}
+
+if EXCLUDE_DEFAULT_ROBLOX_ANIMATIONS then
+    for _,v in ipairs(plr.Character.Animate:GetDescendants()) do
+        if v:IsA("Animation") then
+            bl[v] = v
+        end
+    end
+end
+
+pcall(function() getgenv().ANIMATIONSTEALER:Disconnect() end)
+rconsoleclear()
+rconsoleprint("( ANIMATION STEALER )\n\n")
+getgenv().ANIMATIONSTEALER = plr.Character.Humanoid.AnimationPlayed:Connect(function(track)
+    local anim = track.Animation
+    if not bl[anim] and #tostring(anim.AnimationId) > 13 then
+        bl[anim] = anim
+        local id = tonumber(anim.AnimationId:sub(string.find(anim.AnimationId,"%d+")))
+        local info = mps:GetProductInfo(id, Enum.InfoType.Asset)
+        rconsoleprint("\""..info.Name.."\"\nrbxassetid://"..id.."\n\n")
+    end
+end)
