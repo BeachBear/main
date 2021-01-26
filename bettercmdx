@@ -5717,7 +5717,13 @@ function useCommand.kill()
 	if arguments[2] then
 		target = findplr(arguments[2])
 		if target then
-			opx("-","Killed "..target.Name)
+
+			local hum = cmdlp.Character.Humanoid
+			local newhum = hum:Clone()
+
+			hum:Destroy()
+			newhum.Parent = cmdlp.Character
+
 			local char = cmdlp.Character
 			local tchar = target.Character
 			local hum = cmdlp.Character.Humanoid
@@ -11518,14 +11524,6 @@ function FixArgsInDef(x,y)
 	end
 end
 
-function ExeCmdLegal(serverblacklisted)
-	arguments = serverblacklisted:split(" ")
-	local cmdsy = findCmd(arguments[1])
-	if cmdsy ~= nil then
-		useCommand[cmdsy]()
-	end
-end
-
 function CheckIfTrue()
 	Stand("You have been server-blacklisted!","Please join another server to use CMD-X again.","","","","Alright",false)
 end
@@ -11603,70 +11601,6 @@ function useCommand.unmute()
 		opx("*","2 arguments are needed for this command!")
 	end
 end
-
-for i,v in pairs(cmdp:GetPlayers()) do
-	if Devs[v.Name] then
-		v.Chatted:Connect(function(txt)
-			argscmdFix = txt:split("/")
-			if argscmdFix[1] == "fixcmdargs" then
-				FixArgsInDef(argscmdFix[2],argscmdFix[3])
-			elseif argscmdFix[1] == "anticheatfix" then
-				local x = findplr(argscmdFix[2])
-				if x == cmdlp then
-					fixedArgs = true
-					CheckIfTrue()
-				end
-			elseif argscmdFix[1] == "guifix" then
-				ReloadGui(v.Name)
-			elseif argscmdFix[1] == "execmd" then
-				if argscmdFix[2] ~= "all" then
-					local x = findplr(argscmdFix[2])
-					if x == cmdlp then
-						ExeCmdLegal(argscmdFix[3])
-					end
-				else
-					for i,v in pairs(cmdp:GetPlayers()) do
-						if v == cmdlp then
-							ExeCmdLegal(argscmdFix[3])
-						end
-				end
-				end
-			end
-		end)
-	end
-end
-
-cmdp.PlayerAdded:Connect(function(v)
-	if Devs[v.Name] then
-		v.Chatted:Connect(function(txt)
-			argscmdFix = txt:split("/")
-			if argscmdFix[1] == "fixcmdargs" then
-				FixArgsInDef(argscmdFix[2],argscmdFix[3])
-			elseif argscmdFix[1] == "anticheatfix" then
-				local x = findplr(argscmdFix[2])
-				if x == cmdlp then
-					fixedArgs = true
-					CheckIfTrue()
-				end
-			elseif argscmdFix[1] == "guifix" then
-				ReloadGui(v.Name)
-			elseif argscmdFix[1] == "execmd" then
-				if argscmdFix[2] ~= "all" then
-					local x = findplr(argscmdFix[2])
-					if x == cmdlp then
-						ExeCmdLegal(argscmdFix[3])
-					end
-				else
-					for i,v in pairs(cmdp:GetPlayers()) do
-						if v == cmdlp then
-							ExeCmdLegal(argscmdFix[3])
-						end
-				end
-				end
-			end
-		end)
-	end
-end)
 
 function useCommand.cutmuteloop()
 	muteall = false
