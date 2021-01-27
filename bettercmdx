@@ -1,7 +1,7 @@
 ---------------------------------------|
 if not game:IsLoaded() then game.Loaded:wait() end
 -- Constraints: -----------------------|
-local ver = "D_1.0"
+local ver = "D 1.0.3"
 local cordCode = "nil"
 ---------------------------------------|
 Parents = {[1] = game:GetService("CoreGui"):FindFirstChild("RobloxGui"), [2] = game:GetService("CoreGui"), [3] = game:GetService("Players").LocalPlayer.PlayerGui}
