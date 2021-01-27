@@ -13428,36 +13428,9 @@ end
 
 function useCommand.rejoindiff()
 	rejoining = true
-	if syn.queue_on_teleport then
-		syn.queue_on_teleport('game:GetService("ReplicatedFirst"):RemoveDefaultLoadingScreen()')
-	end
+	syn.queue_on_teleport('loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/BeachBear/main/master/bettercmdx"))()')
 	opx("-","Starting rejoin different...")
-	local Decision = "any" or arguments[2]
-	local GUIDs = {}
-	local maxPlayers = 0
-	local Http = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100&cursor="))
-	for i = 1,100 do
-		for i,v in pairs(Http.data) do
-			if v.playing ~= v.maxPlayers then
-				maxPlayers = v.maxPlayers
-				table.insert(GUIDs, {id = v.id, users = v.playing})
-			end
-		end
-		opx("-","Page searched...")
-		if Http.nextPageCursor ~= null then Http = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100&cursor="..Http.nextPageCursor)) else break end
-	end
-	opx("-","Attempting teleport...")
-	if Decision == "any" then
-		game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, GUIDs[math.random(1,#GUIDs)].id, cmdlp)
-	elseif Decision == "smallest" then
-		game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, GUIDs[#GUIDs].id, cmdlp)
-	elseif Decision == "largest" then
-		game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, GUIDs[1].id, cmdlp)
-	else
-		opx("*","A valid preset was required!")
-	end
-	wait(3)
-	rejoining = false
+	loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/BeachBear/main/master/serverhop"))()
 end
 
 function useCommand.streamsnipe()
@@ -14269,7 +14242,6 @@ function useCommand.servers()
 		for i,v in pairs(Http.data) do
 			xServers = xServers..v.playing.."/"..v.maxPlayers.." {"..v.id.."}".."\n"
 		end
-		opx("-","Page searched...")
 		if Http.nextPageCursor then
 			Http = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..placeid.."/servers/Public?sortOrder=Asc&limit=100&cursor="..Http.nextPageCursor))
 		else
