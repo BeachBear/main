@@ -4143,7 +4143,7 @@ function noclip()
 	Clip = false
 	function NoclipLoop()
 		if Clip == false and cmdlp.Character ~= nil then
-			for _, child in pairs(cmdlp.Character:GetDescendants()) do
+			for _, child in pairs(cmdlp.Character:GetChildren()) do
 				if child:IsA("BasePart") and child.CanCollide == true then
 					child.CanCollide = false
 				end
