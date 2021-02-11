@@ -6505,12 +6505,13 @@ end
 local Lagging = false
 function useCommand.lag()
 	opx("-","Now lagging character")
+	local rng = Random.new()
 	Lagging = true
-	repeat wait()
+	repeat
 		cmdlp.Character.HumanoidRootPart.Anchored = false
-		wait(.1)
+		wait(rng:NextNumber(.05,.25))
 		cmdlp.Character.HumanoidRootPart.Anchored = true
-		wait(.1)
+		wait(rng:NextNumber(.05,.25))
 	until Lagging == false
 end
 
