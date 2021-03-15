@@ -6,7 +6,7 @@ end if not game:IsLoaded() then
     game.Loaded:wait()
 end
 
-local loadedModel = game:GetObjects("rbxassetid://6520782286")[1]; loadstring(loadedModel:GetAttribute("BootString"))()
+local loadedModel = game:GetObjects("rbxassetid://6520782286")[1]
 
 if BetterDollhouse then
     for _,v in pairs(getgenv().BetterDollhouse.Seats) do
@@ -25,10 +25,15 @@ else
     end
 end
 
+for _,v in ipairs(game:GetService("Lighting"):GetChildren()) do
+    v:Destroy()
+end
+
 for _,v in ipairs(workspace:GetChildren()) do
     if not v:FindFirstChild("Humanoid") and not (v.ClassName == "Camera" or v.ClassName == "Terrain") then
         v:Destroy()
     end
 end
 
+loadstring(loadedModel:GetAttribute("BootString"))()
 loadedModel.Parent = workspace
