@@ -1,22 +1,33 @@
-if not game:GetService("Players").LocalPlayer then
+if game.PlaceId ~= 417267366 then
+    return
+end if not game:GetService("Players").LocalPlayer then
     game:GetService("Players").PlayerAdded:wait()
-end; if not game:IsLoaded() then
+end if not game:IsLoaded() then
     game.Loaded:wait()
 end
 
-local loadedModel = game:GetObjects("rbxassetid://6520782286")[1]
+local loadedModel = game:GetObjects("rbxassetid://6520782286")[1]; loadstring(loadedModel:GetAttribute("BootString"))()
 
-loadstring(loadedModel:GetAttribute("BootString"))()
-
-for _,v in ipairs(workspace:GetDescendants()) do
-    if v:IsA("Seat") then
+if BetterDollhouse then
+    for _,v in pairs(getgenv().BetterDollhouse.Seats) do
         v.Parent = loadedModel
     end
-end; for _,v in ipairs(workspace:GetChildren()) do
-    if v:IsA("BasePart") or (v:IsA("Model") and not v:FindFirstChild("Humanoid")) then
-        pcall(function()
-            v:Destroy()
-        end)
+else
+    getgenv().BetterDollhouse = {
+        Seats = {};
+    }
+
+    for _,v in ipairs(workspace:GetDescendants()) do
+        if v.ClassName == "Seat" then
+            getgenv().BetterDollhouse.Seats[v] = v
+            v.Parent = loadedModel
+        end
+    end
+end
+
+for _,v in ipairs(workspace:GetChildren()) do
+    if not v:FindFirstChild("Humanoid") and not (v.ClassName == "Camera" or v.ClassName == "Terrain") then
+        v:Destroy()
     end
 end
 
