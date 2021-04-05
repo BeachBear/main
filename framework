@@ -18,7 +18,7 @@ function ezcmd.new(name, prefix, seperator)
         end
     end
 
-    function newSeperator:GetPrefix()
+    function newFramework:GetPrefix()
         return prefix
     end
 
