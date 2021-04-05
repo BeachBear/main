@@ -1,5 +1,7 @@
-test = {}
+local test = {}
 
 function test:PrintSomething(something)
     print(something)
 end
+
+return test
