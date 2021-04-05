@@ -1,7 +1,44 @@
-local test = {}
+local ezcmd = {}
 
-function test:PrintSomething(something)
-    print(something)
+function framework.new(name, prefix, seperator)
+    name = name or "DefaultCommands"
+    prefix = prefix or "/"
+    seperator = seperator or ";;"
+
+    local newFramework = {
+        Prefix = prefix;
+        Seperator = seperator;
+        Commands = {};
+    }
+
+    function newFramework:SetPrefix(newPrefix)
+        if (newPrefix) then
+            prefix = newPrefix
+            getgenv[name].Prefix = newPrefix
+        end
+    end
+
+    function newSeperator:GetPrefix()
+        return prefix
+    end
+
+    function newFramework:SetSeperator(newSeperator)
+        if (newSeperator) then
+            seperator = newSeperator
+            getgenv[name].Seperator = newSeperator
+        end
+    end
+
+    function newFramework:GetSeperator()
+        return seperator
+    end
+
+    function newFramework.DigestString(str)
+        print(str)
+    end
+
+    getgenv()[name] = newFramework
+    return getgenv()[name]
 end
 
-return test
+return ezcmd
