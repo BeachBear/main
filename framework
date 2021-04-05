@@ -1,6 +1,6 @@
 local ezcmd = {}
 
-function framework.new(name, prefix, seperator)
+function ezcmd.new(name, prefix, seperator)
     name = name or "DefaultCommands"
     prefix = prefix or "/"
     seperator = seperator or ";;"
