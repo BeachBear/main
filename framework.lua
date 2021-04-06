@@ -123,7 +123,6 @@ function ezcmd.new(name, prefix, seperator)
         for _, v in ipairs(getgenv()[name].Connections) do
             v:Disconnect()
         end
-        table.clear(getgenv()[name])
     end
     getgenv()[name] = newFramework
     return newFramework
