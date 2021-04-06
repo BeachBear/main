@@ -6,10 +6,7 @@ function ezcmd.new(name, prefix, seperator)
     seperator = seperator or ";;"
 
     local newFramework = {
-        Prefix = prefix;
-        Seperator = seperator;
         Commands = {};
-        CommandInfo = {};
         Connections = {};
     }
 
@@ -41,10 +38,6 @@ function ezcmd.new(name, prefix, seperator)
         }
 
         newFramework.Commands[name] = command
-        newFramework.CommandInfo[#newFramework.CommandInfo + 1] = {
-            Name = name;
-            Description = description;
-        }
         for _,v in ipairs(aliases) do
             if (v ~= name) then
                 newFramework.Commands[v] = command
@@ -59,7 +52,6 @@ function ezcmd.new(name, prefix, seperator)
     function newFramework:SetPrefix(newPrefix)
         if (newPrefix) then
             prefix = newPrefix
-            getgenv[name].Prefix = newPrefix
         end
     end
 
@@ -70,7 +62,6 @@ function ezcmd.new(name, prefix, seperator)
     function newFramework:SetSeperator(newSeperator)
         if (newSeperator) then
             seperator = newSeperator
-            getgenv[name].Seperator = newSeperator
         end
     end
 
