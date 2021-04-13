@@ -1,4 +1,6 @@
 local ezcmd = {}
+local plrs = game:GetService("Players")
+local plr = plrs.LocalPlayer
 
 function ezcmd.new(name, prefix, seperator)
     local name, prefix, seperator = name, prefix or "/", seperator or ";;"
@@ -65,6 +67,26 @@ function ezcmd.new(name, prefix, seperator)
                 self.Commands[v] = command
             end
         end
+    end
+
+
+    function newFramework:GetPlayerFromString(str)
+        str = str:lower()
+
+        if (str == "me") then
+            return plr
+        elseif (str == "rand" or str == "random") then
+            local list = plrs:GetPlayers()
+            return list[math.random(1, #list)]
+        end
+
+        for _, p in ipairs(plrs:GetPlayers()) do
+            if p.Name:lower():sub(1, #str) == str then
+                return p
+            end
+        end
+
+        return nil
     end
 
 
