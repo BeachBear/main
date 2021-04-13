@@ -1,8 +1,9 @@
-local ezcmd = {}
+local module = {}
 local plrs = game:GetService("Players")
 local plr = plrs.LocalPlayer
 
-function ezcmd.new(name, prefix, seperator)
+
+function module.new(name, prefix, seperator)
     local name, prefix, seperator = name, prefix or "/", seperator or ";;"
     local newFramework = { Commands = {}, Connections = {} }
 
@@ -46,12 +47,12 @@ function ezcmd.new(name, prefix, seperator)
                     t.Toggled = not t.Toggled
 
                     if (t.Toggled) then
-                        t.Run(args)
+                        t.Run(args, t)
                     else
-                        t.Unrun(args)
+                        t.Unrun(args, t)
                     end
                 else
-                    t.Run(args)
+                    t.Run(args, t)
                 end
             end;
 
@@ -70,26 +71,6 @@ function ezcmd.new(name, prefix, seperator)
     end
 
 
-    function newFramework:GetPlayerFromString(str)
-        str = str:lower()
-
-        if (str == "me") then
-            return plr
-        elseif (str == "rand" or str == "random") then
-            local list = plrs:GetPlayers()
-            return list[math.random(1, #list)]
-        end
-
-        for _, p in ipairs(plrs:GetPlayers()) do
-            if p.Name:lower():sub(1, #str) == str then
-                return p
-            end
-        end
-
-        return nil
-    end
-
-
     function newFramework.DigestString(str, includePrefix)
         includePrefix = includePrefix == nil and true or includePrefix
         local commands = str:split(seperator)
@@ -99,12 +80,12 @@ function ezcmd.new(name, prefix, seperator)
 
             local function sepArgs(foundCmd)
                 if (foundCmd.SeperateArgs == false) then
-                    foundCmd.Logic(foundCmd, cmdLine:sub(#lineSplit[1] + 1))
+                    coroutine.wrap(foundCmd.Logic)(foundCmd, cmdLine:sub(#lineSplit[1] + 1))
                 else
                     local args = { unpack(lineSplit) }
                     table.remove(args, 1)
                     
-                    foundCmd.Logic(foundCmd, args)
+                    coroutine.wrap(foundCmd.Logic)(foundCmd, args)
                 end
             end
 
@@ -122,17 +103,37 @@ function ezcmd.new(name, prefix, seperator)
         end
     end
 
-
-    if (getgenv()[name]) then
-        for _, v in ipairs(getgenv()[name].Connections) do
+    
+    if (module[name]) then
+        for _, v in ipairs(module[name].Connections) do
             v:Disconnect()
         end
     end
 
-
-    getgenv()[name] = newFramework
+    module[name] = newFramework
     return newFramework
 end
 
-getgenv().ezcmd = ezcmd
-return ezcmd
+
+function module:GetPlayerFromString(str)
+    str = str:lower()
+
+    if (str == "me") then
+        return plr
+    elseif (str == "rand" or str == "random") then
+        local list = plrs:GetPlayers()
+        return list[math.random(1, #list)]
+    end
+
+    for _, p in ipairs(plrs:GetPlayers()) do
+        if p.Name:lower():sub(1, #str) == str then
+            return p
+        end
+    end
+
+    return nil
+end
+
+
+getgenv().ezcmd = module
+return module
