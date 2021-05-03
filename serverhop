@@ -1,38 +1,43 @@
-local cfg = getgenv().serverhopsettings or {
-    PAGES = 4;
-    MAX_PING = 125;
-}
-local function newserver()
+local function NewServer()
+    local cfg = getgenv().serverhopsettings or {
+        PAGES = 4;
+        MAX_PING = 125;
+    }
+
     local rng = Random.new()
     local plr = game:GetService("Players").LocalPlayer
     local servers = {}
-    for _ = 1,100 do
+
+    while true do
         for _ = 1, cfg.PAGES do
-            local decode = game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100&cursor="))
-            if decode.nextPageCursor ~= nil then
-                decode = game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100&cursor="..decode.nextPageCursor))
-                for _,server in pairs(decode.data) do
+            local info = game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/"..cfg.PLACEID or game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100&cursor="))
+            if info.nextPageCursor ~= nil then
+                info = game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/"..cfg.PLACEID or game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100&cursor="..info.nextPageCursor))
+                for _,server in pairs(info.data) do
                     pcall(function()
                         if server.id ~= game.JobId and server.maxPlayers - server.playing > 1 and server.ping <= cfg.MAX_PING then
-                            servers[#servers+1] = server.id
+                            servers[#servers + 1] = server.id
                         end
                     end)
                 end
             else
-                for _,server in pairs(decode.data) do
+                for _,server in pairs(info.data) do
                     pcall(function()
                         if server.id ~= game.JobId and server.maxPlayers - server.playing > 1 and server.ping <= cfg.MAX_PING then
-                            servers[#servers+1] = server.id
+                            servers[#servers + 1] = server.id
                         end
                     end)
                 end
+
                 break
             end
         end
-        pcall(function()
-            game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, servers[rng:NextInteger(1,#servers)], plr) 
-        end)
-        wait(8)
+
+        pcall(function() game:GetService("TeleportService"):TeleportToPlaceInstance(cfg.PLACEID or game.PlaceId, servers[rng:NextInteger(1, #servers)], plr) end)
+
+        wait(3)
     end
 end
-newserver()
+
+
+NewServer()
